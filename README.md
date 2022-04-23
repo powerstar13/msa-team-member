@@ -1,9 +1,13 @@
-# 빗썸 테크캠프 2주차 과제
+# MSA Team - Member Domain Server
 
+`현재 접근하신 Repository는 회원 Domain Server 입니다.`
 
-- [회원 모듈](https://github.com/kysyo/OnlineClass-Member)
-- [강의 모듈](https://github.com/kysyo/OnlineClass-Lecture)
-- [게시판 모듈](https://github.com/kysyo/OnlineClass-NoticeBoard)
+## [회원 Domain Server Link](https://github.com/powerstar13/msa-team-member)
+Port: 8081
+## [게시판 Domain Server Link](https://github.com/qpyu66/msa-community)
+Port: 8082
+## [강의 Domain Server Link]()
+Port: 8083
 
 # 도메인 모델
 ![DDD 도메인 과제 - 도메인 모델](https://user-images.githubusercontent.com/53042885/164647974-3815559b-298f-44f7-b7ba-d67c26d89320.jpg)
