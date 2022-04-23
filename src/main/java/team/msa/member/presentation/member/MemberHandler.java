@@ -1,8 +1,8 @@
-package team.msa.member.handler;
+package team.msa.member.presentation.member;
 
-import team.msa.member.service.MemberService;
-import team.msa.member.domain.Member;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import team.msa.member.application.member.MemberApplicationService;
+import team.msa.member.domain.model.member.Member;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -13,18 +13,18 @@ import reactor.core.scheduler.Schedulers;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class MemberHandler {
 
-    @Autowired
-    MemberService memberService;
+    private final MemberApplicationService memberApplicationService;
 
     // 회원가입
-    public Mono<ServerResponse> signUpHandler(ServerRequest request) {
+    public Mono<ServerResponse> signUp(ServerRequest request) {
 
         Mono<Member> member = request.bodyToMono(Map.class)
                 .publishOn(Schedulers.parallel())
                 .switchIfEmpty(Mono.error(new IllegalStateException("user SingUp data required")))
-                .map(data -> memberService.SignUp(data))
+                .map(memberApplicationService::SignUp)
                 ;
 
         return ServerResponse.ok()
@@ -33,12 +33,12 @@ public class MemberHandler {
     }
 
     // 로그인
-    public Mono<ServerResponse> loginHandler(ServerRequest request) {
+    public Mono<ServerResponse> login(ServerRequest request) {
 
         Mono<Member> member = request.bodyToMono(Map.class)
                 .publishOn(Schedulers.parallel())
                 .switchIfEmpty(Mono.error(new IllegalStateException("user Login data required")))
-                .map(data -> memberService.Login(data))
+                .map(memberApplicationService::Login)
                 ;
 
         return ServerResponse.ok()
@@ -47,12 +47,12 @@ public class MemberHandler {
     }
 
     // 강사 생성 (관리자만)
-    public Mono<ServerResponse> setUpLectureHandler(ServerRequest request) {
+    public Mono<ServerResponse> setUpTeacher(ServerRequest request) {
 
         Mono<Member> member = request.bodyToMono(Map.class)
                 .publishOn(Schedulers.parallel())
                 .switchIfEmpty(Mono.error(new IllegalStateException("setUp Lecture data required")))
-                .map(data -> memberService.SetUpLecturer(data))
+                .map(memberApplicationService::SetUpLecturer)
                 ;
 
         return ServerResponse.ok()
@@ -61,12 +61,12 @@ public class MemberHandler {
     }
 
     // 회원정보 수정
-    public Mono<ServerResponse> editMemberInfoHandler(ServerRequest request) {
+    public Mono<ServerResponse> editMemberInfo(ServerRequest request) {
 
         Mono<Member> member = request.bodyToMono(String.class)
                 .publishOn(Schedulers.parallel())
                 .switchIfEmpty(Mono.error(new IllegalStateException("setUp Lecture data required")))
-                .map(data -> memberService.EditMemberInfo(data))
+                .map(memberApplicationService::EditMemberInfo)
                 ;
 
         return ServerResponse.ok()
@@ -80,13 +80,12 @@ public class MemberHandler {
         Mono<Member> member = request.bodyToMono(String.class)
                 .publishOn(Schedulers.parallel())
                 .switchIfEmpty(Mono.error(new IllegalStateException("setUp Lecture data required")))
-                .map(data -> memberService.GetMemberInfo(data))
+                .map(memberApplicationService::GetMemberInfo)
                 ;
 
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(member, Member.class);
     }
-
 
 }

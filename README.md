@@ -2,11 +2,15 @@
 
 `현재 접근하신 Repository는 회원 Domain Server 입니다.`
 
-## [회원 Domain Server Link](https://github.com/powerstar13/msa-team-member)
+### [Eureka Server Link](https://github.com/powerstar13/msa-team-eureka)
+Port: 8761
+### [Gateway Server Link](https://github.com/powerstar13/msa-team-gateway)
+Port: 8080
+### [회원 Domain Server Link](https://github.com/powerstar13/msa-team-member)
 Port: 8081
-## [게시판 Domain Server Link](https://github.com/qpyu66/msa-community)
+### [게시판 Domain Server Link](https://github.com/qpyu66/msa-community)
 Port: 8082
-## [강의 Domain Server Link]()
+### [강의 Domain Server Link](https://github.com/brightchul/CodestatesTeam2LectureService)
 Port: 8083
 
 # 도메인 모델
