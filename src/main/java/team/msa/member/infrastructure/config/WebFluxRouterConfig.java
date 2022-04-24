@@ -44,9 +44,17 @@ public class WebFluxRouterConfig implements WebFluxConfigurer {
                     builder
                         .POST("/studentRegistration", memberHandler::studentRegistration) // 학생 회원 가입
                         .POST("/login", memberHandler::login) // 로그인
-                        .GET("/findMemberInfo", memberHandler::findMemberInfo) // 회원 정보 조회
                 )
             )
             .build();
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> memberRouterGETBuilder(MemberHandler memberHandler) {
+        return RouterFunctions.route()
+                .path("/member", builder -> builder
+                        .GET("/findMemberInfo/{memberId}", memberHandler::findMemberInfo)
+                ).build();
+    }
+
 }
