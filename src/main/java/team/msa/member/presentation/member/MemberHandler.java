@@ -1,91 +1,69 @@
 package team.msa.member.presentation.member;
 
 import lombok.RequiredArgsConstructor;
-import team.msa.member.application.member.MemberApplicationService;
-import team.msa.member.domain.model.member.Member;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
-import java.util.Map;
+import team.msa.member.application.member.MemberApplicationService;
+import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.presentation.shared.response.ServerResponseFactory;
 
 @Component
 @RequiredArgsConstructor
 public class MemberHandler {
 
+    private final ServerResponseFactory serverResponseFactory;
     private final MemberApplicationService memberApplicationService;
 
-    // 회원가입
-    public Mono<ServerResponse> signUp(ServerRequest request) {
+    /**
+     * 강사 등록
+     * --> '사이트 운영자'는 강의 컨테츠를 업로드할 '강사' 회원을 생성할 수 있다.
+     * @param request : 등록할 강사 정보
+     * @return Mono<ServerResponse> : 등록된 강사 정보
+     */
+    public Mono<ServerResponse> teacherRegistration(ServerRequest request) {
 
-        Mono<Member> member = request.bodyToMono(Map.class)
-                .publishOn(Schedulers.parallel())
-                .switchIfEmpty(Mono.error(new IllegalStateException("user SingUp data required")))
-                .map(memberApplicationService::SignUp)
-                ;
+        MemberBlahBlahResponse response = memberApplicationService.teacherRegistration(request);
 
-        return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(member, Member.class);
+        return serverResponseFactory.successBodyValue(response);
     }
 
-    // 로그인
+    /**
+     * 학생 회원 가입
+     * --> 강의를 수강하고자 하는 사람은 '학생'으로 회원 가입이 가능하다.
+     * @param request : 가입할 학생 정보
+     * @return Mono<ServerResponse> : 등록된 학생 회원 정보
+     */
+    public Mono<ServerResponse> studentRegistration(ServerRequest request) {
+
+        MemberBlahBlahResponse response = memberApplicationService.studentRegistration(request);
+
+        return serverResponseFactory.successBodyValue(response);
+    }
+
+    /**
+     * 로그인
+     * @param request : 로그인 정보
+     * @return Mono<ServerResponse> : 권한 인증 정보
+     */
     public Mono<ServerResponse> login(ServerRequest request) {
 
-        Mono<Member> member = request.bodyToMono(Map.class)
-                .publishOn(Schedulers.parallel())
-                .switchIfEmpty(Mono.error(new IllegalStateException("user Login data required")))
-                .map(memberApplicationService::Login)
-                ;
+        MemberBlahBlahResponse response = memberApplicationService.login(request);
 
-        return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(member, Member.class);
+        return serverResponseFactory.successBodyValue(response);
     }
 
-    // 강사 생성 (관리자만)
-    public Mono<ServerResponse> setUpTeacher(ServerRequest request) {
+    /**
+     * 회원 정보 조회
+     * @param request : 조회할 회원 정보
+     * @return Mono<ServerResponse> : 조회된 회원 정보
+     */
+    public Mono<ServerResponse> findMemberInfo(ServerRequest request) {
 
-        Mono<Member> member = request.bodyToMono(Map.class)
-                .publishOn(Schedulers.parallel())
-                .switchIfEmpty(Mono.error(new IllegalStateException("setUp Lecture data required")))
-                .map(memberApplicationService::SetUpLecturer)
-                ;
+        MemberBlahBlahResponse response = memberApplicationService.findMemberInfo(request);
 
-        return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(member, Member.class);
-    }
-
-    // 회원정보 수정
-    public Mono<ServerResponse> editMemberInfo(ServerRequest request) {
-
-        Mono<Member> member = request.bodyToMono(String.class)
-                .publishOn(Schedulers.parallel())
-                .switchIfEmpty(Mono.error(new IllegalStateException("setUp Lecture data required")))
-                .map(memberApplicationService::EditMemberInfo)
-                ;
-
-        return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(member, Member.class);
-    }
-
-    // 회원정보 제공
-    public Mono<ServerResponse> getMemberInfoHandler(ServerRequest request) {
-
-        Mono<Member> member = request.bodyToMono(String.class)
-                .publishOn(Schedulers.parallel())
-                .switchIfEmpty(Mono.error(new IllegalStateException("setUp Lecture data required")))
-                .map(memberApplicationService::GetMemberInfo)
-                ;
-
-        return ServerResponse.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(member, Member.class);
+        return serverResponseFactory.successBodyValue(response);
     }
 
 }

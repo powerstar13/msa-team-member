@@ -1,35 +1,29 @@
 package team.msa.member.application.member;
 
 import org.springframework.stereotype.Service;
-import team.msa.member.domain.model.member.Member;
-
-import java.util.Map;
+import org.springframework.web.reactive.function.server.ServerRequest;
+import team.msa.member.application.response.MemberBlahBlahResponse;
 
 @Service
 public class MemberApplicationServiceImpl implements MemberApplicationService {
 
     @Override
-    public Member SignUp(Map<String, String> param) {
-        return null;
+    public MemberBlahBlahResponse teacherRegistration(ServerRequest request) {
+        return MemberBlahBlahResponse.builder().memberId(1).build();
     }
 
     @Override
-    public Member Login(Map<String, String> param) {
-        return null;
+    public MemberBlahBlahResponse studentRegistration(ServerRequest request) {
+        return MemberBlahBlahResponse.builder().memberId(1).build();
     }
 
     @Override
-    public Member SetUpLecturer(Map<String, String> param) {
-        return null;
+    public MemberBlahBlahResponse login(ServerRequest request) {
+        return MemberBlahBlahResponse.builder().memberId(1).build();
     }
 
     @Override
-    public Member EditMemberInfo(String id) {
-        return null;
-    }
-
-    @Override
-    public Member GetMemberInfo(String id) {
-        return null;
+    public MemberBlahBlahResponse findMemberInfo(ServerRequest request) {
+        return MemberBlahBlahResponse.builder().memberId(1).build();
     }
 }

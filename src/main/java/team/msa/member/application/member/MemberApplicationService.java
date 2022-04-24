@@ -1,24 +1,16 @@
 package team.msa.member.application.member;
 
-import team.msa.member.domain.model.member.Member;
-
-import java.util.Map;
+import org.springframework.web.reactive.function.server.ServerRequest;
+import team.msa.member.application.response.MemberBlahBlahResponse;
 
 public interface MemberApplicationService {
 
-    // 회원가입
-    Member SignUp(Map<String, String> param);
+    MemberBlahBlahResponse teacherRegistration(ServerRequest request); // 강사 등록
 
-    // 로그인
-    Member Login(Map<String, String> param);
+    MemberBlahBlahResponse studentRegistration(ServerRequest request); // 학생 회원 가입
 
-    // 강사 생성 (관리자만)
-    Member SetUpLecturer(Map<String, String> param);
+    MemberBlahBlahResponse login(ServerRequest request); // 로그인
 
-    // 회원정보 수정
-    Member EditMemberInfo(String id);
-
-    // 회원정보 제공
-    Member GetMemberInfo(String id);
+    MemberBlahBlahResponse findMemberInfo(ServerRequest request); // 회원 정보 조회
 
 }
