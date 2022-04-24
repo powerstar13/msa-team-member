@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.infrastructure.exception.status.AlreadyDataException;
 import team.msa.member.infrastructure.exception.status.RegistrationFailException;
-import team.msa.member.presentation.admin.request.MemberRegistrationRequest;
+import team.msa.member.presentation.member.request.MemberRegistrationRequest;
 
 @Component
 @RequiredArgsConstructor

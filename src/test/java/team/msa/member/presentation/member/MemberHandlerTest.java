@@ -10,7 +10,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.infrastructure.config.WebFluxRouterConfig;
-import team.msa.member.presentation.admin.request.MemberRegistrationRequest;
+import team.msa.member.presentation.member.request.MemberRegistrationRequest;
 
 @SpringBootTest
 class MemberHandlerTest {

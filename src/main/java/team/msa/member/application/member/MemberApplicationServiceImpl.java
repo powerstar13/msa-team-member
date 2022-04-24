@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.domain.model.member.*;
-import team.msa.member.presentation.admin.request.MemberRegistrationRequest;
+import team.msa.member.presentation.member.request.MemberRegistrationRequest;
 
 @Service
 @RequiredArgsConstructor

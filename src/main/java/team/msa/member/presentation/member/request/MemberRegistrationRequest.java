@@ -1,4 +1,4 @@
-package team.msa.member.presentation.admin.request;
+package team.msa.member.presentation.member.request;
 
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;

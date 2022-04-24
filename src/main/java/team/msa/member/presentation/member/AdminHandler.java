@@ -1,4 +1,4 @@
-package team.msa.member.presentation.admin;
+package team.msa.member.presentation.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;

@@ -8,7 +8,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import team.msa.member.presentation.admin.AdminHandler;
+import team.msa.member.presentation.member.AdminHandler;
 import team.msa.member.presentation.member.MemberHandler;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;

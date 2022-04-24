@@ -1,4 +1,4 @@
-package team.msa.member.presentation.admin;
+package team.msa.member.presentation.member;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.infrastructure.config.WebFluxRouterConfig;
-import team.msa.member.presentation.admin.request.MemberRegistrationRequest;
+import team.msa.member.presentation.member.request.MemberRegistrationRequest;
+import team.msa.member.presentation.member.AdminHandler;
 
 @SpringBootTest
 class AdminHandlerTest {
