@@ -1,16 +1,17 @@
 package team.msa.member.application.member;
 
 import org.springframework.web.reactive.function.server.ServerRequest;
+import reactor.core.publisher.Mono;
 import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.application.response.MemberRegistrationResponse;
+import team.msa.member.domain.model.member.MemberType;
 
 public interface MemberApplicationService {
 
-    MemberBlahBlahResponse teacherRegistration(ServerRequest request); // 강사 등록
+    Mono<MemberRegistrationResponse> memberRegistration(ServerRequest request, MemberType memberType); // 회원 계정 생성
 
-    MemberBlahBlahResponse studentRegistration(ServerRequest request); // 학생 회원 가입
+    Mono<MemberBlahBlahResponse> login(ServerRequest request); // 로그인
 
-    MemberBlahBlahResponse login(ServerRequest request); // 로그인
-
-    MemberBlahBlahResponse findMemberInfo(ServerRequest request); // 회원 정보 조회
+    Mono<MemberBlahBlahResponse> findMemberInfo(ServerRequest request); // 회원 정보 조회
 
 }

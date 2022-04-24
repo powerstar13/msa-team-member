@@ -1,14 +1,16 @@
 package team.msa.member.presentation.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import team.msa.member.application.member.MemberApplicationService;
-import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.application.response.MemberRegistrationResponse;
+import team.msa.member.domain.model.member.MemberType;
 
-import static team.msa.member.presentation.shared.response.ServerResponseFactory.successBodyValue;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Component
 @RequiredArgsConstructor
@@ -24,8 +26,10 @@ public class AdminHandler {
      */
     public Mono<ServerResponse> teacherRegistration(ServerRequest request) {
 
-        MemberBlahBlahResponse response = memberApplicationService.teacherRegistration(request);
+        Mono<MemberRegistrationResponse> response = memberApplicationService.memberRegistration(request, MemberType.TEACHER);
 
-        return successBodyValue(response);
+        return ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(response, MemberRegistrationResponse.class);
     }
 }

@@ -1,14 +1,18 @@
 package team.msa.member.presentation.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import team.msa.member.application.member.MemberApplicationService;
 import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.application.response.MemberRegistrationResponse;
+import team.msa.member.domain.model.member.MemberType;
 
-import static team.msa.member.presentation.shared.response.ServerResponseFactory.successBodyValue;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Component
 @RequiredArgsConstructor
@@ -24,9 +28,11 @@ public class MemberHandler {
      */
     public Mono<ServerResponse> studentRegistration(ServerRequest request) {
 
-        MemberBlahBlahResponse response = memberApplicationService.studentRegistration(request);
+        Mono<MemberRegistrationResponse> response = memberApplicationService.memberRegistration(request, MemberType.STUDENT);
 
-        return successBodyValue(response);
+        return ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(response, MemberRegistrationResponse.class);
     }
 
     /**
@@ -36,9 +42,11 @@ public class MemberHandler {
      */
     public Mono<ServerResponse> login(ServerRequest request) {
 
-        MemberBlahBlahResponse response = memberApplicationService.login(request);
+        Mono<MemberBlahBlahResponse> response = memberApplicationService.login(request);
 
-        return successBodyValue(response);
+        return ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(response, MemberBlahBlahResponse.class);
     }
 
     /**
@@ -48,9 +56,11 @@ public class MemberHandler {
      */
     public Mono<ServerResponse> findMemberInfo(ServerRequest request) {
 
-        MemberBlahBlahResponse response = memberApplicationService.findMemberInfo(request);
+        Mono<MemberBlahBlahResponse> response = memberApplicationService.findMemberInfo(request);
 
-        return successBodyValue(response);
+        return ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(response, MemberBlahBlahResponse.class);
     }
 
 }
