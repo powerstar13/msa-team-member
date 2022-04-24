@@ -3,6 +3,7 @@ package team.msa.member.application.member;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.application.response.MemberInfoResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.domain.model.member.MemberType;
 
@@ -12,6 +13,6 @@ public interface MemberApplicationService {
 
     Mono<MemberBlahBlahResponse> login(ServerRequest request); // 로그인
 
-    Mono<MemberBlahBlahResponse> findMemberInfo(ServerRequest request); // 회원 정보 조회
+    Mono<MemberInfoResponse> findMemberInfo(ServerRequest request); // 회원 정보 조회
 
 }

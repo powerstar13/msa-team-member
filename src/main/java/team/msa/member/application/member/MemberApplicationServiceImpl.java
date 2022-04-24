@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
 import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.application.response.MemberInfoResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.domain.model.member.*;
 import team.msa.member.presentation.member.request.MemberRegistrationRequest;
@@ -51,7 +52,11 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     }
 
     @Override
-    public Mono<MemberBlahBlahResponse> findMemberInfo(ServerRequest request) {
-        return Mono.just(MemberBlahBlahResponse.builder().memberId(1).build());
+    public Mono<MemberInfoResponse> findMemberInfo(ServerRequest request) {
+
+        Integer memberId = Integer.parseInt(request.pathVariable("memberId"));
+
+        return  memberRepository.findById(memberId)
+                .map(m -> new MemberInfoResponse( m.getMemberId(), m.getMemberType()));
     }
 }

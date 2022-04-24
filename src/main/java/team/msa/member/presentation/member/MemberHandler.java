@@ -9,7 +9,9 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import team.msa.member.application.member.MemberApplicationService;
 import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.application.response.MemberInfoResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
+import team.msa.member.domain.model.member.Member;
 import team.msa.member.domain.model.member.MemberType;
 
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
@@ -56,11 +58,10 @@ public class MemberHandler {
      */
     public Mono<ServerResponse> findMemberInfo(ServerRequest request) {
 
-        Mono<MemberBlahBlahResponse> response = memberApplicationService.findMemberInfo(request);
+        Mono<MemberInfoResponse> response = memberApplicationService.findMemberInfo(request);
 
-        return ok()
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(response, MemberBlahBlahResponse.class);
+        return  ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(response, MemberInfoResponse.class);
+                //ServerResponse.ok().//serverResponseFactory.successBodyValue(response, Member.class);
     }
 
 }
