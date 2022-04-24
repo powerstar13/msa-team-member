@@ -43,7 +43,9 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     }
 
     @Override
-    public MemberBlahBlahResponse findMemberInfo(ServerRequest request) {
-        return MemberBlahBlahResponse.builder().memberId(1).build();
+    public Mono<Member> findMemberInfo(ServerRequest request) {
+
+        Integer memberId = Integer.parseInt(request.pathVariable("memberId"));
+        return memberRepository.findById(memberId);
     }
 }

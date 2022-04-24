@@ -23,7 +23,7 @@ class MemberHandlerTest {
     void setUp() {
         webTestClient = WebTestClient
             .bindToRouterFunction( // WebFluxConfig에서 작성한 router를 WebTestClient에 바인딩해준다.
-                webFluxRouterConfig.memberRouterBuilder(memberHandler)
+                webFluxRouterConfig.memberRouterPostBuilder(memberHandler)
             )
             .build();
     }

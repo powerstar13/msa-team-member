@@ -1,12 +1,14 @@
 package team.msa.member.presentation.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import team.msa.member.application.member.MemberApplicationService;
 import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.domain.model.member.Member;
 import team.msa.member.presentation.shared.response.ServerResponseFactory;
 
 @Component
@@ -61,9 +63,10 @@ public class MemberHandler {
      */
     public Mono<ServerResponse> findMemberInfo(ServerRequest request) {
 
-        MemberBlahBlahResponse response = memberApplicationService.findMemberInfo(request);
+        Mono<Member> response = memberApplicationService.findMemberInfo(request);
 
-        return serverResponseFactory.successBodyValue(response);
+        return  ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(response, Member.class);
+                //ServerResponse.ok().//serverResponseFactory.successBodyValue(response, Member.class);
     }
 
 }

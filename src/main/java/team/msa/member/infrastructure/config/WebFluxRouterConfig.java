@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import team.msa.member.presentation.member.MemberHandler;
 
+import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
 @Configuration
@@ -17,7 +18,7 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 public class WebFluxRouterConfig implements WebFluxConfigurer {
 
     @Bean
-    public RouterFunction<ServerResponse> memberRouterBuilder(MemberHandler memberHandler) {
+    public RouterFunction<ServerResponse> memberRouterPostBuilder(MemberHandler memberHandler) {
 
         return RouterFunctions.route()
             .path("/member", memberBuilder ->
@@ -26,9 +27,18 @@ public class WebFluxRouterConfig implements WebFluxConfigurer {
                         .POST("/teacherRegistration", memberHandler::teacherRegistration) // 강사 생성 (관리자만)
                         .POST("/studentRegistration", memberHandler::studentRegistration) // 회원가입
                         .POST("/login", memberHandler::login) // 로그인
-                        .GET("/findMemberInfo", memberHandler::findMemberInfo) // 회원정보 제공
+                        //.GET("/findMemberInfo/{memberId}", memberHandler::findMemberInfo) // 회원정보 제공
                 )
             )
             .build();
     }
+
+    @Bean
+    public RouterFunction<ServerResponse> memberRouterGETBuilder(MemberHandler memberHandler) {
+        return RouterFunctions.route()
+                .path("/member", builder -> builder
+                        .GET("/findMemberInfo/{memberId}", memberHandler::findMemberInfo)
+                ).build();
+    }
+
 }
