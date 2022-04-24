@@ -1,4 +1,4 @@
-package team.msa.member.presentation.member;
+package team.msa.member.infrastructure.jwt;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
