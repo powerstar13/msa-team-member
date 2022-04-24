@@ -18,8 +18,8 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
 
     private void validateDuplicateMember(Member member) {
         //Exception
-        Mono<Boolean> duplicatYn = memberRepository.existsById(member.getMemberId());
-        duplicatYn.flatMap(isExist -> {
+        Mono<Boolean> duplicateYn = memberRepository.existsById(member.getMemberId());
+        duplicateYn.flatMap(isExist -> {
             if(isExist){
                 Mono.error(new IllegalStateException("duplicate member!!"));
             }
