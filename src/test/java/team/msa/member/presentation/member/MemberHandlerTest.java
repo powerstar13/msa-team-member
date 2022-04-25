@@ -32,6 +32,30 @@ class MemberHandlerTest {
     }
 
     /**
+     * 강사 등록
+     */
+    @Test
+    void teacherRegistration() {
+
+        MemberRegistrationRequest request = MemberRegistrationRequest.builder()
+            .memberName("홍강사")
+            .memberPassword("1234")
+            .build();
+
+        webTestClient
+            .post()
+            .uri("/member/admin/teacherRegistration")
+            .bodyValue(request)
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody(MemberRegistrationResponse.class)
+            .value(memberRegistrationResponse -> {
+                Assertions.assertInstanceOf(Integer.class, memberRegistrationResponse.getMemberId());
+            });
+    }
+
+    /**
      * 학생 회원 등록
      */
     @Test
