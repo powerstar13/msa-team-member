@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberInfoResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
@@ -16,17 +17,8 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
 
     private final MemberRepository memberRepository;
     private final MemberSaveSpecification memberSaveSpecification;
+    private final MemberSearchSpecification memberSearchSpecification;
 
-    private void validateDuplicateMember(Member member) {
-        //Exception
-        Mono<Boolean> duplicateYn = memberRepository.existsById(member.getMemberId());
-        duplicateYn.flatMap(isExist -> {
-            if(isExist){
-                Mono.error(new IllegalStateException("duplicate member!!"));
-            }
-            return Mono.just(isExist);
-        });
-    }
 
     /**
      * 회원 계정 생성
@@ -47,7 +39,8 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     }
 
     @Override
-    public Mono<MemberBlahBlahResponse> login(ServerRequest request) {
+    public Mono<MemberBlahBlahResponse> login(ServerRequest serverRequest) {
+
         return Mono.just(MemberBlahBlahResponse.builder().memberId(1).build());
     }
 
@@ -55,8 +48,6 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     public Mono<MemberInfoResponse> findMemberInfo(ServerRequest request) {
 
         Integer memberId = Integer.parseInt(request.pathVariable("memberId"));
-
-        return  memberRepository.findById(memberId)
-                .map(m -> new MemberInfoResponse( m.getMemberId(), m.getMemberType()));
+        return memberSearchSpecification.getMemberInfo(memberId);
     }
 }
