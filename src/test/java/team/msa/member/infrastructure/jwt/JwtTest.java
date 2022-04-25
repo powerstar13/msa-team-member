@@ -15,7 +15,7 @@ public class JwtTest {
     private JwtProvider jwtProvider;
 
     @Value("${jwt.refreshExpires}")
-    private String refreshExpires;
+    private String refreshExpiresString;
 
     @Test
     void generateToken() {
@@ -25,9 +25,9 @@ public class JwtTest {
                 .memberPassword("memberPassword")
                 .memberType(MemberType.ADMIN)
                 .build();
-        long accessExpires = Long.parseLong(refreshExpires);
+        long refreshExpires = Long.parseLong(refreshExpiresString);
 
-        String token = jwtProvider.createJwtToken(member, accessExpires);
+        String token = jwtProvider.createJwtToken(member, refreshExpires);
         System.out.println(token);
 
     }
