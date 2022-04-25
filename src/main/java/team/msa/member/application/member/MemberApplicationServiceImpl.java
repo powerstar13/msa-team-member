@@ -48,6 +48,6 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     public Mono<MemberInfoResponse> findMemberInfo(ServerRequest request) {
 
         Integer memberId = Integer.parseInt(request.pathVariable("memberId"));
-        return memberSearchSpecification.getMemberInfo(memberId).subscribeOn(Schedulers.boundedElastic());
+        return memberSearchSpecification.getMemberInfo(memberId);
     }
 }

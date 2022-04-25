@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import team.msa.member.application.member.MemberApplicationService;
 import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberInfoResponse;
@@ -58,7 +59,8 @@ public class MemberHandler {
      */
     public Mono<ServerResponse> findMemberInfo(ServerRequest request) {
 
-        Mono<MemberInfoResponse> response = memberApplicationService.findMemberInfo(request);
+        Mono<MemberInfoResponse> response = memberApplicationService.findMemberInfo(request)
+                .subscribeOn(Schedulers.boundedElastic());
 
         return  ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(response, MemberInfoResponse.class);
                 //ServerResponse.ok().//serverResponseFactory.successBodyValue(response, Member.class);
