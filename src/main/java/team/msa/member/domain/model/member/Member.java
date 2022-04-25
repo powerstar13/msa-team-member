@@ -17,7 +17,7 @@ public class Member {
 
     @Id // ID로 엔티티를 식별한다.
     @Column(value = "memberId")
-    private Integer memberId; // 회원 고유번호
+    private int memberId; // 회원 고유번호
 
     @Column(value = "memberName")
     private String memberName; // 회원 이름
