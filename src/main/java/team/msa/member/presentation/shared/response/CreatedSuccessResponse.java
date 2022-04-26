@@ -9,5 +9,6 @@ import org.springframework.http.HttpStatus;
 public class CreatedSuccessResponse {
 
     private final int rt = HttpStatus.CREATED.value();
-    private final String rtMsg = HttpStatus.OK.getReasonPhrase();
+
+    private final String rtMsg = HttpStatus.CREATED.getReasonPhrase();
 }

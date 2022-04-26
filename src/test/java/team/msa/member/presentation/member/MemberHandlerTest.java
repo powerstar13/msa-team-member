@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberInfoResponse;
+import team.msa.member.application.response.MemberLoginResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.infrastructure.config.WebFluxRouterConfig;
 import team.msa.member.presentation.member.request.MemberRegistrationRequest;
@@ -99,7 +99,7 @@ class MemberHandlerTest {
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk()
-            .expectBody(MemberBlahBlahResponse.class);
+            .expectBody(MemberLoginResponse.class);
     }
 
     /**
