@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public class SuccessResponse {
+public class CreatedSuccessResponse {
 
-    private final int rt = HttpStatus.OK.value();
+    private final int rt = HttpStatus.CREATED.value();
     private final String rtMsg = HttpStatus.OK.getReasonPhrase();
 }
