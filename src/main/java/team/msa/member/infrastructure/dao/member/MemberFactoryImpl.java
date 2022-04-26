@@ -6,6 +6,7 @@ import team.msa.member.domain.model.member.Member;
 import team.msa.member.domain.model.member.MemberFactory;
 import team.msa.member.domain.model.member.MemberType;
 import team.msa.member.infrastructure.exception.status.BadRequestException;
+import team.msa.member.infrastructure.exception.status.ExceptionMessage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +24,9 @@ public class MemberFactoryImpl implements MemberFactory {
     @Override
     public Member memberBuilder(String memberName, String memberPassword, MemberType memberType) {
 
-        if (StringUtils.isBlank(memberName)) throw new BadRequestException("이름을 입력해 주세요.");
-        if (StringUtils.isBlank(memberPassword)) throw new BadRequestException("비밀번호를 입력해 주세요.");
-        if (memberType == null) throw new BadRequestException("회원 유형을 선택해 주세요.");
+        if (StringUtils.isBlank(memberName)) throw new BadRequestException(ExceptionMessage.IsRequiredMemberName.getMessage());
+        if (StringUtils.isBlank(memberPassword)) throw new BadRequestException(ExceptionMessage.IsRequiredMemberPassword.getMessage());
+        if (memberType == null) throw new BadRequestException(ExceptionMessage.IsRequiredMemberType.getMessage());
 
         return Member.builder()
             .memberName(memberName)

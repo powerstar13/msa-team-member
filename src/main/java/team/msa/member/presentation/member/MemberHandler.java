@@ -40,8 +40,6 @@ public class MemberHandler {
      */
     public Mono<ServerResponse> memberRegistration(ServerRequest request) {
 
-        System.out.println("Request path" + request.path());
-
         Mono<MemberRegistrationResponse> response = memberApplicationService.memberRegistration(request,
                 request.path().contains(MemberType.ADMIN.getName().toLowerCase()) ?
                     MemberType.TEACHER

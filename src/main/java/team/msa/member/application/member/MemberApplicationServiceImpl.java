@@ -10,6 +10,7 @@ import team.msa.member.application.response.MemberLoginResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.domain.model.member.*;
 import team.msa.member.infrastructure.exception.status.BadRequestException;
+import team.msa.member.infrastructure.exception.status.ExceptionMessage;
 import team.msa.member.presentation.member.request.MemberLoginRequest;
 import team.msa.member.domain.model.member.MemberSaveSpecification;
 import team.msa.member.domain.model.member.MemberSearchSpecification;
@@ -24,8 +25,6 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     private final MemberSearchSpecification memberSearchSpecification;
 
     private final MemberLoginSpecification memberLoginSpecification;
-
-
 
     /**
      * 회원 계정 생성
@@ -42,7 +41,7 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
 
                 return memberSaveSpecification.memberExistCheckAndRegistration(request, memberType); // 회원 계정 생성
             }
-        ).switchIfEmpty(Mono.error(new BadRequestException("Request를 전달해주세요.")));
+        ).switchIfEmpty(Mono.error(new BadRequestException(ExceptionMessage.IsRequiredRequest.getMessage())));
     }
 
     @Override
@@ -53,15 +52,14 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
                     request.verify(); // Request 유효성 검사
                     return memberLoginSpecification.memberExistCheckAndLogin(request);
                 }
-        );
+        ).switchIfEmpty(Mono.error(new BadRequestException(ExceptionMessage.IsRequiredRequest.getMessage())));
     }
-
 
     @Override
     public Mono<MemberInfoResponse> findMemberInfo(ServerRequest request) {
 
         String memberIdStr = request.pathVariable("memberId");
-        if (StringUtils.isBlank(memberIdStr)) throw new BadRequestException("전달된 회원 고유번호가 없습니다.");
+        if (StringUtils.isBlank(memberIdStr)) throw new BadRequestException(ExceptionMessage.IsRequiredMemberId.getMessage());
 
         int memberId = Integer.parseInt(memberIdStr);
 

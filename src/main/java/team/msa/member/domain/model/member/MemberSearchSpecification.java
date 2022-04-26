@@ -16,10 +16,4 @@ public class MemberSearchSpecification {
         return memberRepository.findById(memberId)
                 .map(m -> new MemberInfoResponse( m.getMemberId(), m.getMemberType()));
     }
-
-
-
-
-
-
 }

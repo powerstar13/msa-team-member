@@ -3,6 +3,7 @@ package team.msa.member.presentation.member.request;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
 import team.msa.member.infrastructure.exception.status.BadRequestException;
+import team.msa.member.infrastructure.exception.status.ExceptionMessage;
 import team.msa.member.presentation.shared.request.RequestVerify;
 
 @Getter
@@ -19,7 +20,7 @@ public class MemberLoginRequest implements RequestVerify {
     @Override
     public void verify() {
 
-        if (StringUtils.isBlank(memberName)) throw new BadRequestException("이름을 입력해 주세요.");
-        if (StringUtils.isBlank(memberPassword)) throw new BadRequestException("비밀번호를 입력해 주세요.");
+        if (StringUtils.isBlank(memberName)) throw new BadRequestException(ExceptionMessage.IsRequiredMemberName.getMessage());
+        if (StringUtils.isBlank(memberPassword)) throw new BadRequestException(ExceptionMessage.IsRequiredMemberPassword.getMessage());
     }
 }
