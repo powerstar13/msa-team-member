@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import team.msa.member.application.response.MemberLoginResponse;
-import team.msa.member.application.response.MemberRegistrationResponse;
-import team.msa.member.infrastructure.exception.status.AlreadyDataException;
+import team.msa.member.infrastructure.exception.status.ExceptionMessage;
 import team.msa.member.infrastructure.exception.status.UnauthorizedException;
 import team.msa.member.infrastructure.jwt.JwtProvider;
 import team.msa.member.presentation.member.request.MemberLoginRequest;
@@ -29,10 +28,9 @@ public class MemberLoginSpecification {
         return member
                 .hasElement()
                 .flatMap(hasMember -> {
-                    if (!hasMember) return Mono.error(new UnauthorizedException("회원정보를 확인해주세요"));
+                    if (!hasMember) return Mono.error(new UnauthorizedException(ExceptionMessage.NotFoundLoginMember.getMessage()));
 
                     return MakeMemberLoginResponse(member);
-
                 });
     }
 

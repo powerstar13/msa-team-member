@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.infrastructure.exception.status.AlreadyDataException;
+import team.msa.member.infrastructure.exception.status.ExceptionMessage;
 import team.msa.member.infrastructure.exception.status.RegistrationFailException;
 import team.msa.member.presentation.member.request.MemberRegistrationRequest;
 
@@ -27,7 +28,7 @@ public class MemberSaveSpecification {
             .hasElement()
             .flatMap(alreadyMember -> {
 
-                if (alreadyMember) return Mono.error(new AlreadyDataException("이미 존재하는 회원입니다."));
+                if (alreadyMember) return Mono.error(new AlreadyDataException(ExceptionMessage.AlreadyDataMember.getMessage()));
 
                 return this.memberRegistration(request, memberType)
                     .flatMap(savedMember -> Mono.just(
@@ -53,6 +54,6 @@ public class MemberSaveSpecification {
                 request.getMemberPassword(),
                 memberType
             )
-        ).switchIfEmpty(Mono.error(new RegistrationFailException("회원 가입에 실패했습니다. 관리자에게 문의 바랍니다.")));
+        ).switchIfEmpty(Mono.error(new RegistrationFailException(ExceptionMessage.SaveFailMember.getMessage())));
     }
 }

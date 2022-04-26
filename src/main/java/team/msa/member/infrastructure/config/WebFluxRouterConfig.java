@@ -23,8 +23,8 @@ public class WebFluxRouterConfig implements WebFluxConfigurer {
             .path("/member", memberBuilder ->
                 memberBuilder.nest(accept(MediaType.APPLICATION_JSON), builder ->
                     builder
-                        .POST("/admin/teacherRegistration", memberHandler::teacherRegistration) // 강사 등록 (관리자만)
-                        .POST("/studentRegistration", memberHandler::studentRegistration) // 학생 회원 가입
+                        .POST("/admin/teacherRegistration", memberHandler::memberRegistration) // 강사 등록 (관리자만)
+                        .POST("/studentRegistration", memberHandler::memberRegistration) // 학생 회원 가입
                         .POST("/login", memberHandler::login) // 로그인
                 )
             )
@@ -34,9 +34,9 @@ public class WebFluxRouterConfig implements WebFluxConfigurer {
     @Bean
     public RouterFunction<ServerResponse> memberRouterGETBuilder(MemberHandler memberHandler) {
         return RouterFunctions.route()
-                .path("/member", builder -> builder
-                        .GET("/findMemberInfo/{memberId}", memberHandler::findMemberInfo)
-                ).build();
+            .path("/member", builder -> builder
+                .GET("/findMemberInfo/{memberId}", memberHandler::findMemberInfo)
+            ).build();
     }
 
 }

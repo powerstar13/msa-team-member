@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import team.msa.member.application.response.MemberBlahBlahResponse;
+import team.msa.member.application.response.MemberInfoResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.infrastructure.config.WebFluxRouterConfig;
 import team.msa.member.presentation.member.request.MemberRegistrationRequest;
@@ -15,7 +16,8 @@ import team.msa.member.presentation.member.request.MemberRegistrationRequest;
 @SpringBootTest
 class MemberHandlerTest {
 
-    private WebTestClient webTestClient;
+    private WebTestClient webTestClientPostMethod;
+    private WebTestClient webTestClientGetMethod;
 
     @Autowired
     private WebFluxRouterConfig webFluxRouterConfig;
@@ -24,9 +26,15 @@ class MemberHandlerTest {
 
     @BeforeEach
     void setUp() {
-        webTestClient = WebTestClient
+        webTestClientPostMethod = WebTestClient
             .bindToRouterFunction( // WebFluxConfig에서 작성한 router를 WebTestClient에 바인딩해준다.
                 webFluxRouterConfig.memberRouterBuilder(memberHandler)
+            )
+            .build();
+
+        webTestClientGetMethod = WebTestClient
+            .bindToRouterFunction( // WebFluxConfig에서 작성한 router를 WebTestClient에 바인딩해준다.
+                webFluxRouterConfig.memberRouterGETBuilder(memberHandler)
             )
             .build();
     }
@@ -42,7 +50,7 @@ class MemberHandlerTest {
             .memberPassword("1234")
             .build();
 
-        webTestClient
+        webTestClientPostMethod
             .post()
             .uri("/member/admin/teacherRegistration")
             .bodyValue(request)
@@ -66,7 +74,7 @@ class MemberHandlerTest {
             .memberPassword("1234")
             .build();
 
-        webTestClient
+        webTestClientPostMethod
             .post()
             .uri("/member/studentRegistration")
             .bodyValue(request)
@@ -85,7 +93,7 @@ class MemberHandlerTest {
     @Test
     void login() {
 
-        webTestClient
+        webTestClientPostMethod
             .post()
             .uri("/member/login")
             .accept(MediaType.APPLICATION_JSON)
@@ -100,12 +108,11 @@ class MemberHandlerTest {
     @Test
     void findMemberInfo() {
 
-        webTestClient
+        webTestClientGetMethod
             .get()
-            .uri("/member/findMemberInfo")
-            .accept(MediaType.APPLICATION_JSON)
+            .uri("/member/findMemberInfo/1")
             .exchange()
             .expectStatus().isOk()
-            .expectBody(MemberBlahBlahResponse.class);
+            .expectBody(MemberInfoResponse.class);
     }
 }

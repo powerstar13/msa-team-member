@@ -1,32 +1,30 @@
 package team.msa.member.application.member;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
-import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberInfoResponse;
 import team.msa.member.application.response.MemberLoginResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.domain.model.member.*;
 import team.msa.member.infrastructure.exception.status.BadRequestException;
-import team.msa.member.infrastructure.exception.status.UnauthorizedException;
-import team.msa.member.infrastructure.jwt.JwtProvider;
+import team.msa.member.infrastructure.exception.status.ExceptionMessage;
 import team.msa.member.presentation.member.request.MemberLoginRequest;
+import team.msa.member.domain.model.member.MemberSaveSpecification;
+import team.msa.member.domain.model.member.MemberSearchSpecification;
+import team.msa.member.domain.model.member.MemberType;
 import team.msa.member.presentation.member.request.MemberRegistrationRequest;
 
 @Service
 @RequiredArgsConstructor
 public class MemberApplicationServiceImpl implements MemberApplicationService {
 
-    private final MemberRepository memberRepository;
     private final MemberSaveSpecification memberSaveSpecification;
     private final MemberSearchSpecification memberSearchSpecification;
 
     private final MemberLoginSpecification memberLoginSpecification;
-
-
 
     /**
      * 회원 계정 생성
@@ -43,7 +41,7 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
 
                 return memberSaveSpecification.memberExistCheckAndRegistration(request, memberType); // 회원 계정 생성
             }
-        );
+        ).switchIfEmpty(Mono.error(new BadRequestException(ExceptionMessage.IsRequiredRequest.getMessage())));
     }
 
     @Override
@@ -54,14 +52,17 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
                     request.verify(); // Request 유효성 검사
                     return memberLoginSpecification.memberExistCheckAndLogin(request);
                 }
-        );
+        ).switchIfEmpty(Mono.error(new BadRequestException(ExceptionMessage.IsRequiredRequest.getMessage())));
     }
-
 
     @Override
     public Mono<MemberInfoResponse> findMemberInfo(ServerRequest request) {
 
-        Integer memberId = Integer.parseInt(request.pathVariable("memberId"));
+        String memberIdStr = request.pathVariable("memberId");
+        if (StringUtils.isBlank(memberIdStr)) throw new BadRequestException(ExceptionMessage.IsRequiredMemberId.getMessage());
+
+        int memberId = Integer.parseInt(memberIdStr);
+
         return memberSearchSpecification.getMemberInfo(memberId);
     }
 }
