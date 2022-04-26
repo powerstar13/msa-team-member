@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+import team.msa.member.application.member.MemberSha256;
 import team.msa.member.application.response.MemberLoginResponse;
 import team.msa.member.infrastructure.exception.status.ExceptionMessage;
 import team.msa.member.infrastructure.exception.status.UnauthorizedException;
@@ -24,7 +25,7 @@ public class MemberLoginSpecification {
 
     public Mono<MemberLoginResponse> memberExistCheckAndLogin(MemberLoginRequest request) {
 
-        Mono<Member> member = memberRepository.findByMemberNameAndMemberPassword(request.getMemberName(), request.getMemberPassword());
+        Mono<Member> member = memberRepository.findByMemberNameAndMemberPassword(request.getMemberName(), MemberSha256.encrypt(request.getMemberPassword()));
         return member
                 .hasElement()
                 .flatMap(hasMember -> {
