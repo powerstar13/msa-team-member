@@ -9,6 +9,7 @@ spring:
     username: sa
     password:
     initialization-mode: always
+    port: 9093
 
 eureka:
   client:

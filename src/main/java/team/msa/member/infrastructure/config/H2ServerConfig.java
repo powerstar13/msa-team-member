@@ -1,6 +1,7 @@
 package team.msa.member.infrastructure.config;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -15,12 +16,14 @@ import java.sql.SQLException;
 @EnableR2dbcAuditing
 public class H2ServerConfig {
     private Server webServer;
-    Integer h2ConsolePort = 9093;
+
+    @Value("${spring.r2dbc.port}")
+    String h2ConsolePort;
 
     @EventListener(ContextRefreshedEvent.class)
     public void start() throws SQLException {
         log.info("starting h2 console at port {}", h2ConsolePort);
-        this.webServer = Server.createWebServer("-webPort", h2ConsolePort.toString());
+        this.webServer = Server.createWebServer("-webPort", h2ConsolePort);
         this.webServer.start();
     }
 
