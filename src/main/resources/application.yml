@@ -5,9 +5,11 @@ spring:
   application:
     name: Member Domain Server
   r2dbc:
-    url: r2dbc:h2:mem:///msa
+    url: r2dbc:h2:mem:///msa;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
     username: sa
     password:
+    initialization-mode: always
+    port: 9093
 
 eureka:
   client:

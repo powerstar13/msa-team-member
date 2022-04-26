@@ -11,6 +11,7 @@ import reactor.core.scheduler.Schedulers;
 import team.msa.member.application.member.MemberApplicationService;
 import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberInfoResponse;
+import team.msa.member.application.response.MemberLoginResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.domain.model.member.Member;
 import team.msa.member.domain.model.member.MemberType;
@@ -62,11 +63,12 @@ public class MemberHandler {
      */
     public Mono<ServerResponse> login(ServerRequest request) {
 
-        Mono<MemberBlahBlahResponse> response = memberApplicationService.login(request);
+        Mono<MemberLoginResponse> response = memberApplicationService.login(request)
+                .subscribeOn(Schedulers.boundedElastic());
 
         return ok()
             .contentType(MediaType.APPLICATION_JSON)
-            .body(response, MemberBlahBlahResponse.class);
+            .body(response, MemberLoginResponse.class);
     }
 
     /**

@@ -1,5 +1,8 @@
 package team.msa.member.infrastructure.config;
 
+import io.r2dbc.h2.H2ConnectionConfiguration;
+import io.r2dbc.h2.H2ConnectionFactory;
+import io.r2dbc.h2.H2ConnectionOption;
 import io.r2dbc.spi.ConnectionFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
+import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
+import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import team.msa.member.domain.model.member.MemberFactory;
 import team.msa.member.domain.model.member.MemberRepository;
 
@@ -20,20 +26,35 @@ import java.time.Duration;
 @Slf4j
 @Configuration
 @EnableR2dbcRepositories
+@EnableTransactionManagement
 @RequiredArgsConstructor
 public class R2dbcConfig extends AbstractR2dbcConfiguration {
 
     private final MemberFactory memberFactory;
 
-    /**
-     * ConnectionFactory는 application.yml에서 설정값으로 생성하기 때문에 생략한다.
-     * @return ConnectionFactory
-     */
+    //localhost9093접속->jdbc:h2:mem:msa 유저 sa 연결(embeded h2)
     @Override
-    public ConnectionFactory connectionFactory() { return null; }
+    public ConnectionFactory connectionFactory() {
+        return new H2ConnectionFactory(H2ConnectionConfiguration.builder()
+                .inMemory("msa")
+                .property(H2ConnectionOption.DB_CLOSE_DELAY, "-1") // DB연결이 닫혀도 유지되도록 설정
+                .username("sa")
+                .build());
+    }
+
+    @Bean
+    public ConnectionFactoryInitializer h2DbInitializer() {
+        ConnectionFactoryInitializer initializer = new ConnectionFactoryInitializer();
+        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
+
+        initializer.setConnectionFactory(connectionFactory());
+        initializer.setDatabasePopulator(resourceDatabasePopulator);
+        return initializer;
+    }
 
     /**
      * 초기 사이트 운영자 데이터 세팅
+     *
      * @param memberRepository : member 레포티토리
      * @return CommandLineRunner : 명령 실행
      */
@@ -44,14 +65,15 @@ public class R2dbcConfig extends AbstractR2dbcConfiguration {
             log.info("===== Member Data setUp START =====");
             // Member 정보 저장
             memberRepository.saveAll(memberFactory.adminSetUpListBuilder())
-                .blockLast(Duration.ofSeconds(10)); // 10초가 만료될 때까지 차단한다.
+                    .blockLast(Duration.ofSeconds(10)); // 10초가 만료될 때까지 차단한다.
 
             log.info("===== Member Data setUp Completed INFO =====");
             memberRepository.findAll()
-                .doOnNext(person -> log.info(person.toString()))
-                .blockLast(Duration.ofSeconds(10));
+                    .doOnNext(person -> log.info(person.toString()))
+                    .blockLast(Duration.ofSeconds(10));
 
             log.info("===== Member Data setUp END =====");
         };
     }
+
 }
