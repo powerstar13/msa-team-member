@@ -8,5 +8,8 @@ import reactor.core.publisher.Mono;
 public interface MemberRepository extends ReactiveCrudRepository<Member, Integer> {
 
     Mono<Member> findByMemberNameAndMemberType(String memberName, MemberType memberType);
+    Mono<Member> findByMemberNameAndMemberPassword(String memberName, String memberPassword);
+
+
 
 }

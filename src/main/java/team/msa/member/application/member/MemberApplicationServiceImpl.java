@@ -1,14 +1,19 @@
 package team.msa.member.application.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberInfoResponse;
+import team.msa.member.application.response.MemberLoginResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.domain.model.member.*;
+import team.msa.member.infrastructure.exception.status.BadRequestException;
+import team.msa.member.infrastructure.exception.status.UnauthorizedException;
+import team.msa.member.infrastructure.jwt.JwtProvider;
+import team.msa.member.presentation.member.request.MemberLoginRequest;
 import team.msa.member.presentation.member.request.MemberRegistrationRequest;
 
 @Service
@@ -18,6 +23,9 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     private final MemberRepository memberRepository;
     private final MemberSaveSpecification memberSaveSpecification;
     private final MemberSearchSpecification memberSearchSpecification;
+
+    private final MemberLoginSpecification memberLoginSpecification;
+
 
 
     /**
@@ -39,10 +47,16 @@ public class MemberApplicationServiceImpl implements MemberApplicationService {
     }
 
     @Override
-    public Mono<MemberBlahBlahResponse> login(ServerRequest serverRequest) {
+    public Mono<MemberLoginResponse> login(ServerRequest serverRequest) {
 
-        return Mono.just(MemberBlahBlahResponse.builder().memberId(1).build());
+        return serverRequest.bodyToMono(MemberLoginRequest.class).flatMap(
+                request -> {
+                    request.verify(); // Request 유효성 검사
+                    return memberLoginSpecification.memberExistCheckAndLogin(request);
+                }
+        );
     }
+
 
     @Override
     public Mono<MemberInfoResponse> findMemberInfo(ServerRequest request) {
