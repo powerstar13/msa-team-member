@@ -32,8 +32,8 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client' // Eureka Client 사용
 	implementation 'org.apache.commons:commons-lang3' // ApacheCommons 사용
 	compileOnly 'org.projectlombok:lombok' // Lombok 사용
-	runtimeOnly 'com.h2database:h2' // 인메모리 사용 위해 H2 database 채택
-	runtimeOnly 'io.r2dbc:r2dbc-h2'
+	implementation 'com.h2database:h2'
+	implementation 'io.r2dbc:r2dbc-h2'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test' // Reactive 사용
