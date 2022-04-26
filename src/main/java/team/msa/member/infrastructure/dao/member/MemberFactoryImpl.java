@@ -10,6 +10,7 @@ import team.msa.member.infrastructure.exception.status.ExceptionMessage;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MemberFactoryImpl implements MemberFactory {
@@ -42,19 +43,10 @@ public class MemberFactoryImpl implements MemberFactory {
     @Override
     public List<Member> adminSetUpListBuilder() {
 
-        return Arrays.asList(
-            this.memberBuilder("홍준성", "msa", MemberType.ADMIN),
-            this.memberBuilder("유하얀", "msa", MemberType.ADMIN),
-            this.memberBuilder("이휘수", "msa", MemberType.ADMIN),
-            this.memberBuilder("배소현", "msa", MemberType.ADMIN),
-            this.memberBuilder("박철훈", "msa", MemberType.ADMIN),
-            this.memberBuilder("윤해서", "msa", MemberType.ADMIN),
-            this.memberBuilder("심재현", "msa", MemberType.ADMIN),
-            this.memberBuilder("김영수", "msa", MemberType.ADMIN),
-            this.memberBuilder("지경희", "msa", MemberType.ADMIN),
-            this.memberBuilder("이성화", "msa", MemberType.ADMIN),
-            this.memberBuilder("정승훈", "msa", MemberType.ADMIN),
-            this.memberBuilder("설동찬", "msa", MemberType.ADMIN)
-        );
+        String[] memberNameArray = new String[] { "홍준성", "유하얀", "이휘수", "배소현", "박철훈", "윤해서", "심재현", "김영수", "지경희", "이성화", "정승훈", "설동찬" };
+
+        return Arrays.stream(memberNameArray)
+            .map(s -> this.memberBuilder(s, "msa", MemberType.ADMIN))
+            .collect(Collectors.toList());
     }
 }
