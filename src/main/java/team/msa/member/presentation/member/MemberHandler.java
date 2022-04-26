@@ -8,7 +8,6 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import team.msa.member.application.member.MemberApplicationService;
-import team.msa.member.application.response.MemberBlahBlahResponse;
 import team.msa.member.application.response.MemberInfoResponse;
 import team.msa.member.application.response.MemberLoginResponse;
 import team.msa.member.application.response.MemberRegistrationResponse;

@@ -13,9 +13,9 @@ import team.msa.member.presentation.shared.request.RequestVerify;
 @AllArgsConstructor
 public class MemberRegistrationRequest implements RequestVerify {
 
-    private String memberName; // 강사 이름
+    private String memberName; // 회원 이름
 
-    private String memberPassword; // 강사 비밀번호
+    private String memberPassword; // 회원 비밀번호
 
     @Override
     public void verify() {

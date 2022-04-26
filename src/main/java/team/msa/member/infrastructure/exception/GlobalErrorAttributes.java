@@ -37,6 +37,7 @@ public class GlobalErrorAttributes extends DefaultErrorAttributes {
         }
 
         // 불필요 필드 제거
+        if (map.get("message") != null) map.remove("message");
         if (map.get("timestamp") != null) map.remove("timestamp");
         if (map.get("requestId") != null) map.remove("requestId");
 

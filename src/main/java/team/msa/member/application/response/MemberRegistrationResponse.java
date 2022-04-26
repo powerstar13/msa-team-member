@@ -10,5 +10,5 @@ import team.msa.member.presentation.shared.response.CreatedSuccessResponse;
 @AllArgsConstructor
 public class MemberRegistrationResponse extends CreatedSuccessResponse {
 
-    private int memberId; // 생성된 회원 고유번호
+    private int memberId; // 회원 고유번호
 }

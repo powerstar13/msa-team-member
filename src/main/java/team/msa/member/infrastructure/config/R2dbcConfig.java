@@ -14,6 +14,7 @@ import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 import org.springframework.r2dbc.connection.init.ConnectionFactoryInitializer;
 import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import reactor.core.scheduler.Schedulers;
 import team.msa.member.domain.model.member.MemberFactory;
 import team.msa.member.domain.model.member.MemberRepository;
 
@@ -62,17 +63,13 @@ public class R2dbcConfig extends AbstractR2dbcConfiguration {
     public CommandLineRunner setUp(MemberRepository memberRepository) {
 
         return args -> {
-            log.info("===== Member Data setUp START =====");
             // Member 정보 저장
             memberRepository.saveAll(memberFactory.adminSetUpListBuilder())
-                    .blockLast(Duration.ofSeconds(10)); // 10초가 만료될 때까지 차단한다.
-
-            log.info("===== Member Data setUp Completed INFO =====");
-            memberRepository.findAll()
-                    .doOnNext(person -> log.info(person.toString()))
-                    .blockLast(Duration.ofSeconds(10));
-
-            log.info("===== Member Data setUp END =====");
+                .doOnSubscribe(subscription -> log.info("===== Member Data setUp START ====="))
+                .doOnNext(member -> log.info(member.toString()))
+                .doOnComplete(() -> log.info("===== Member Data setUp END ====="))
+                .subscribeOn(Schedulers.boundedElastic())
+                .subscribe();
         };
     }
 

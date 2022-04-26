@@ -23,6 +23,11 @@ logging:
     root: INFO
     org.springframework.r2dbc: DEBUG
 
+springdoc:
+  api-docs:
+    groups:
+      enabled: true
+
 msa:
   client:
     url:
