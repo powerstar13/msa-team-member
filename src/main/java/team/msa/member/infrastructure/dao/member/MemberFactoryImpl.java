@@ -32,7 +32,7 @@ public class MemberFactoryImpl implements MemberFactory {
 
         return Member.builder()
             .memberName(memberName)
-            .memberPassword(memberPassword)
+            .memberPassword(MemberSha256.encrypt(memberPassword))
             .memberType(memberType)
             .build();
     }
@@ -47,7 +47,7 @@ public class MemberFactoryImpl implements MemberFactory {
         String[] memberNameArray = new String[] { "홍준성", "유하얀", "이휘수", "배소현", "박철훈", "윤해서", "심재현", "김영수", "지경희", "이성화", "정승훈", "설동찬" };
 
         return Arrays.stream(memberNameArray)
-            .map(s -> this.memberBuilder(s, MemberSha256.encrypt("msa"), MemberType.ADMIN))
+            .map(s -> this.memberBuilder(s, "msa", MemberType.ADMIN))
             .collect(Collectors.toList());
     }
 }

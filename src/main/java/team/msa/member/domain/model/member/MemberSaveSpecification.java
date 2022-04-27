@@ -3,7 +3,6 @@ package team.msa.member.domain.model.member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
-import team.msa.member.application.member.MemberSha256;
 import team.msa.member.application.response.MemberRegistrationResponse;
 import team.msa.member.infrastructure.exception.status.AlreadyDataException;
 import team.msa.member.infrastructure.exception.status.ExceptionMessage;
@@ -52,7 +51,7 @@ public class MemberSaveSpecification {
         return memberRepository.save(
             memberFactory.memberBuilder(
                 request.getMemberName(),
-                MemberSha256.encrypt(request.getMemberPassword()),
+                request.getMemberPassword(),
                 memberType
             )
         ).switchIfEmpty(Mono.error(new RegistrationFailException(ExceptionMessage.SaveFailMember.getMessage())));
