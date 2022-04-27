@@ -2,6 +2,7 @@ package team.msa.member.infrastructure.dao.member;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import team.msa.member.application.member.MemberSha256;
 import team.msa.member.domain.model.member.Member;
 import team.msa.member.domain.model.member.MemberFactory;
 import team.msa.member.domain.model.member.MemberType;
@@ -46,7 +47,7 @@ public class MemberFactoryImpl implements MemberFactory {
         String[] memberNameArray = new String[] { "홍준성", "유하얀", "이휘수", "배소현", "박철훈", "윤해서", "심재현", "김영수", "지경희", "이성화", "정승훈", "설동찬" };
 
         return Arrays.stream(memberNameArray)
-            .map(s -> this.memberBuilder(s, "msa", MemberType.ADMIN))
+            .map(s -> this.memberBuilder(s, MemberSha256.encrypt("msa"), MemberType.ADMIN))
             .collect(Collectors.toList());
     }
 }

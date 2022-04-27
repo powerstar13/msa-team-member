@@ -52,7 +52,7 @@ public class MemberSaveSpecification {
         return memberRepository.save(
             memberFactory.memberBuilder(
                 request.getMemberName(),
-                    MemberSha256.encrypt(request.getMemberPassword()),
+                MemberSha256.encrypt(request.getMemberPassword()),
                 memberType
             )
         ).switchIfEmpty(Mono.error(new RegistrationFailException(ExceptionMessage.SaveFailMember.getMessage())));
